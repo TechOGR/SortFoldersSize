@@ -1,6 +1,7 @@
 from PyQt5.QtGui import (
     QIcon,
-    QPixmap
+    QPixmap,
+    QFont
 )
 from PyQt5.QtCore import (
     QSize,
@@ -9,7 +10,9 @@ from PyQt5.QtCore import (
 )
 from PyQt5.QtWidgets import (
     QGraphicsDropShadowEffect,
-    QFileDialog
+    QFileDialog,
+    QTableWidget,
+    QTableWidgetItem
 )
 from os.path import (
     join
@@ -18,7 +21,7 @@ from modules.zizefolder import scan_and_sort_folders
 
 
 class SetStyles:
-    def __init__(self, mainFrame, sideFrame, big_frame, titleFrame,buttons, label_title, pathImages, menuButtons):
+    def __init__(self, mainFrame, sideFrame, big_frame, titleFrame,buttons, label_title, pathImages, menuButtons,table):
         self.imagePath = pathImages
         self.mainFrame = mainFrame
         self.sideFrame = sideFrame
@@ -27,6 +30,9 @@ class SetStyles:
         self.buttons = buttons
         self.labelTitle = label_title
         self.menuButtons = menuButtons
+        self.resultTable = table
+        
+        self.dataFolders = {}
         
         self.menuButtons[0].enterEvent = self.hoverInButton
         self.menuButtons[0].leaveEvent = self.hoverOutButton
@@ -101,7 +107,7 @@ class SetStyles:
         
         packShadows = []
         
-        for i in range(0, len(self.menuButtons)):
+        for i in range(len(self.menuButtons)):
             packShadows.append(QGraphicsDropShadowEffect(self.menuButtons[i]))
             packShadows[i].setYOffset(10)
             packShadows[i].setBlurRadius(10)
@@ -109,7 +115,7 @@ class SetStyles:
         for button in self.menuButtons:
             button.setStyleSheet(style)
             
-        for i in range(0, len(self.iconsBtnMenu)):
+        for i in range(len(self.iconsBtnMenu)):
             self.menuButtons[i].setIcon(self.iconsBtnMenu[i])
             self.menuButtons[i].setIconSize(QSize(30,30))
             self.menuButtons[i].setGraphicsEffect(packShadows[i])
@@ -125,51 +131,40 @@ class SetStyles:
             self.animations[i].start()
             
     def hoverInButton(self, event):
-        animation = QPropertyAnimation(self.menuButtons[0],b'iconSize')
-        animation.setDuration(1000)
-        animation.setStartValue(QSize(35,35))
-        animation.setEndValue(QSize(30,30))
-        animation.start()
+        self._extracted_from_hoverOutButton2_2(0, 35, 30)
         
     def hoverOutButton(self, event):
-        animation = QPropertyAnimation(self.menuButtons[0],b'iconSize')
-        animation.setDuration(1000)
-        animation.setStartValue(QSize(30,30))
-        animation.setEndValue(QSize(35,35))
-        animation.start()
+        self._extracted_from_hoverOutButton2_2(0, 30, 35)
         
     def hoverInButton1(self, event):
-        animation = QPropertyAnimation(self.menuButtons[1],b'iconSize')
-        animation.setDuration(1000)
-        animation.setStartValue(QSize(35,35))
-        animation.setEndValue(QSize(30,30))
-        animation.start()
+        self._extracted_from_hoverOutButton2_2(1, 35, 30)
         
     def hoverOutButton1(self, event):
-        animation = QPropertyAnimation(self.menuButtons[1],b'iconSize')
-        animation.setDuration(1000)
-        animation.setStartValue(QSize(30,30))
-        animation.setEndValue(QSize(35,35))
-        animation.start()
+        self._extracted_from_hoverOutButton2_2(1, 30, 35)
         
     def hoverInButton2(self, event):
-        animation = QPropertyAnimation(self.menuButtons[2],b'iconSize')
-        animation.setDuration(1000)
-        animation.setStartValue(QSize(35,35))
-        animation.setEndValue(QSize(30,30))
-        animation.start()
+        self._extracted_from_hoverOutButton2_2(2, 35, 30)
         
     def hoverOutButton2(self, event):
-        animation = QPropertyAnimation(self.menuButtons[2],b'iconSize')
+        self._extracted_from_hoverOutButton2_2(2, 30, 35)
+
+    # TODO Rename this here and in `hoverInButton`, `hoverOutButton`, `hoverInButton1`, `hoverOutButton1`, `hoverInButton2` and `hoverOutButton2`
+    def _extracted_from_hoverOutButton2_2(self, arg0, arg1, arg2):
+        animation = QPropertyAnimation(self.menuButtons[arg0], b'iconSize')
         animation.setDuration(1000)
-        animation.setStartValue(QSize(30,30))
-        animation.setEndValue(QSize(35,35))
+        animation.setStartValue(QSize(arg1, arg1))
+        animation.setEndValue(QSize(arg2, arg2))
         animation.start()
         
     def openFolder(self):
         folder = QFileDialog.getExistingDirectory(self.mainFrame,"Seleccionar Carpeta", "", QFileDialog.ShowDirsOnly)
 
         try:
-            scan_and_sort_folders(folder)
-        except:
-            print("ERROR")
+            self.dataFolders = scan_and_sort_folders(folder)
+            print(self.dataFolders)
+            self.showInTable()
+        except Exception as error:
+            print(f"ERROR: {error}")
+    
+    def showInTable(self):
+        ...

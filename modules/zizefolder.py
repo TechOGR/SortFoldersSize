@@ -24,6 +24,15 @@ def scan_and_sort_folders(folder = defaultDir):
     folder_sizes.sort(key=lambda x: x[1], reverse=True)
 
     print("\nCarpetas ordenadas por tamaño (de mayor a menor):\n")
+    dataFolders = {
+        "name": [],
+        "size": []
+    }
     for folder, size in folder_sizes:
-        print(f"{folder}: {size / (1024 * 1024):.2f} MB")
+        # print(f"{folder}: {size / (1024 * 1024):.2f} MB")
+        size = round(size / (1024 * 1024),2)
+        dataFolders["name"].append(folder)
+        dataFolders["size"].append(size)
+        
+    return dataFolders
 

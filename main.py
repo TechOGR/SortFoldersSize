@@ -44,7 +44,8 @@ class WindowMain(QFrame):
             [self.btn_side, self.btn_help],
             self.label_title,
             self.imgPath,
-            [self.btn_select_folder, self.btn_scan_folder, self.btn_result_folder,]
+            [self.btn_select_folder, self.btn_scan_folder, self.btn_result_folder],
+            self.resultTable
         )
         style.setMainStyle()
         style.setTitleStyle()
@@ -58,10 +59,7 @@ class WindowMain(QFrame):
     
     def moveSideFrame(self):
         width = self.lateral_frame.width()
-        if width == 0:
-            extend = self.widthSidebar
-        else:
-            extend = 0
+        extend = self.widthSidebar if width == 0 else 0
         self.animationSideFrame = QPropertyAnimation(self.lateral_frame,b"minimumWidth")
         self.animationSideFrame.setDuration(500)
         self.animationSideFrame.setStartValue(width)

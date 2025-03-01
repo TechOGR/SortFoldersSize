@@ -285,30 +285,10 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QTableWidget" name="tableWidget">
-        <row>
-         <property name="text">
-          <string/>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string/>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string/>
-         </property>
-        </row>
+       <widget class="QTableWidget" name="resultTable">
         <column>
          <property name="text">
           <string>Name</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Location</string>
          </property>
         </column>
         <column>
